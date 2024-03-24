@@ -13,6 +13,6 @@ productRouter.put('/update/:id', productControllers.update);
 
 productRouter.put('/hide/:id', productControllers.hide);
 
-productRouter.delete('/:id', productControllers.delete);
+productRouter.delete('/delete/:id', productControllers.delete);
 
 export default productRouter;

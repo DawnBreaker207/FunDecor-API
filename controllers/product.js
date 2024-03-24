@@ -1,9 +1,8 @@
 import Product from '../models/Product.js';
 
 export const productControllers = {
-  getAll: async (req, res) => {
+  getAll: async (req, res, next) => {
     try {
-      // const { data } = await instance.get('/products');
       const data = await Product.find({});
 
       if (data && data.length > 0) {
@@ -14,15 +13,11 @@ export const productControllers = {
       }
       return res.status(400).json({ message: 'Product Not Found' });
     } catch (error) {
-      return res.status(500).json({
-        name: error.name,
-        message: error.message,
-      });
+      next(error);
     }
   },
-  add: async (req, res) => {
+  add: async (req, res, next) => {
     try {
-      // const { data } = await instance.post('/products', res.body);
       const data = await Product.create(req.body);
       console.log(data);
       if (!data) {
@@ -33,15 +28,11 @@ export const productControllers = {
         data,
       });
     } catch (error) {
-      return res.status(500).json({
-        name: error.name,
-        message: error.message,
-      });
+      next(error);
     }
   },
-  getOne: async (req, res) => {
+  getOne: async (req, res, next) => {
     try {
-      // const { data } = await instance.get(`/products/${req.params.id}`);
       const data = await Product.findById(req.params.id);
 
       if (!data) {
@@ -52,18 +43,11 @@ export const productControllers = {
         data,
       });
     } catch (error) {
-      return res.status(500).json({
-        name: error.name,
-        message: error.message,
-      });
+      next(error);
     }
   },
-  update: async (req, res) => {
+  update: async (req, res, next) => {
     try {
-      // const { data } = await instance.put(
-      //   `/products/${req.params.id}`,
-      //   req.body
-      // );
       const data = await Product.findByIdAndUpdate(
         `${req.params.id}`,
         req.body,
@@ -79,18 +63,11 @@ export const productControllers = {
         data,
       });
     } catch (error) {
-      return res.status(500).json({
-        name: error.name,
-        message: error.name,
-      });
+      next(error);
     }
   },
-  hide: async (req, res) => {
+  hide: async (req, res, next) => {
     try {
-      // const { data } = await instance.put(
-      //   `/products/${req.params.id}`,
-      //   req.body
-      // );
       const data = await Product.findByIdAndUpdate(
         `${req.params.id}`,
         { hide: true },
@@ -106,35 +83,23 @@ export const productControllers = {
         data,
       });
     } catch (error) {
-      return res.status(500).json({
-        name: error.name,
-        message: error.name,
-      });
+      next(error);
     }
   },
-  delete: async (req, res) => {
+  delete: async (req, res, next) => {
     try {
-      // const { status } = await instance.delete(`/products/${req.params.id}`);
       const data = await Product.findByIdAndDelete(req.params.id);
-      // console.log(status);
-      // if (status != 200) {
-      //   return res.status(400).json({ message: 'Delete Failed' });
-      // }
+
       if (data) {
         return res.status(200).json({
           message: 'Delete Success',
-          data,
         });
       }
       return res.status(400).json({
         message: 'Delete Failed',
-        data,
       });
     } catch (error) {
-      return res.status(500).json({
-        name: error.name,
-        message: error.message,
-      });
+      next(error);
     }
   },
 };

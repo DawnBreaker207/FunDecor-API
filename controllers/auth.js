@@ -2,7 +2,7 @@ import User from '../models/user.js';
 import { loginSchema, registerSchema } from '../validations/auth.js';
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-export const register = async (req, res) => {
+export const register = async (req, res, next) => {
   try {
     // 1.Check data input
     // 2.Check email exist
@@ -36,13 +36,10 @@ export const register = async (req, res) => {
       user: await user.save(),
     });
   } catch (error) {
-    return res.status(500).json({
-      name: error.name,
-      message: error.message,
-    });
+    next(error);
   }
 };
-export const login = async (req, res) => {
+export const login = async (req, res, next) => {
   try {
     // Step 1: Validate
     const { email, password } = req.body;
@@ -75,9 +72,6 @@ export const login = async (req, res) => {
       userExist,
     });
   } catch (error) {
-    return res.status(500).json({
-      name: error.name,
-      message: error.message,
-    });
+    next(error);
   }
 };
