@@ -1,4 +1,4 @@
-import { errorMessage } from '../constants/message';
+import { errorMessage } from '../constants/message.js';
 
 // Error Handling 404
 export const errorHandlerNotFound = (req, res, next) => {

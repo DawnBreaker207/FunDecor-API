@@ -1,5 +1,10 @@
 import User from '../models/user.js';
+import { checkEmail } from '../utils/checkExist.js';
+import { hashPassword } from '../utils/hashPassword.js';
+import { createToken } from '../utils/jwt.js';
+import { validAuth } from '../utils/validAuth.js';
 import { loginSchema, registerSchema } from '../validations/auth.js';
+
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 export const register = async (req, res, next) => {
@@ -11,21 +16,13 @@ export const register = async (req, res, next) => {
     // 5.Notify success
 
     const { email, password } = req.body;
-    const { error } = registerSchema.validate(req.body, { abortEarly: false });
-    if (error) {
-      const errors = error.details.map((item) => item.message);
-      return res.status(400).json({ message: errors });
-    }
+    validAuth(req.body, registerSchema);
     // ? B2 Check email exist ?
-    const checkEmail = await User.findOne({ email });
-    if (checkEmail) {
-      return res.status(400).json({ message: `Email exist !!!` });
-    }
+    checkEmail(email);
 
     // B3: Encrypt password
+    hashPassword(password);
 
-    const salt = await bcryptjs.genSalt(10);
-    const hashPassword = await bcryptjs.hash(password, salt);
     // user.password = undefined;
     // B4: Create new user
 
@@ -43,13 +40,7 @@ export const login = async (req, res, next) => {
   try {
     // Step 1: Validate
     const { email, password } = req.body;
-    const { value, error } = loginSchema.validate(req.body, {
-      abortEarly: false,
-    });
-    if (error) {
-      const errors = error.details.map((item) => item.message);
-      return res.status(400).json({ message: errors });
-    }
+    validAuth(req.body, loginSchema);
     // Step 2: Check email exist
     const userExist = await User.findOne({ email });
     if (!userExist) {
@@ -60,15 +51,14 @@ export const login = async (req, res, next) => {
     if (!passwordMatch) {
       return res.status(400).json({ message: 'Password not exist' });
     }
+    // checkPassword(password)
     // Step 4: Create token => JWT
-    const token = jwt.sign({ id: userExist._id }, 'secretCode', {
-      expiresIn: '1d',
-    });
+    createToken({ id: userExist._id });
+
     // Step 5: Return token for client
     userExist.password = undefined;
     return res.status(200).json({
       message: 'Login success',
-      token,
       userExist,
     });
   } catch (error) {

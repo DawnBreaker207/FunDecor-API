@@ -4,4 +4,5 @@ export const errorMessage = {
   EMAIL_EXIST: 'Email already exists',
   NOT_FOUND: 'Not found',
   ERROR_SERVER: 'Server error',
+  BAD_REQUEST: 'Bad request',
 };

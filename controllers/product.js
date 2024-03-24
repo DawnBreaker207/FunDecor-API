@@ -1,3 +1,4 @@
+import { errorMessage } from '../constants/message.js';
 import Product from '../models/Product.js';
 
 export const productControllers = {
@@ -11,7 +12,7 @@ export const productControllers = {
           data,
         });
       }
-      return res.status(400).json({ message: 'Product Not Found' });
+      return res.status(400).json({ message: errorMessage.BAD_REQUEST });
     } catch (error) {
       next(error);
     }
@@ -21,7 +22,7 @@ export const productControllers = {
       const data = await Product.create(req.body);
       console.log(data);
       if (!data) {
-        return res.status(400).json({ message: 'Add product fail ' });
+        return res.status(400).json({ message: errorMessage.BAD_REQUEST });
       }
       return res.status(201).json({
         message: 'Add product success',
@@ -36,7 +37,7 @@ export const productControllers = {
       const data = await Product.findById(req.params.id);
 
       if (!data) {
-        return res.status(400).json({ message: 'Take data fail' });
+        return res.status(400).json({ message: errorMessage.BAD_REQUEST });
       }
       return res.status(201).json({
         message: 'Take data success',
@@ -55,7 +56,7 @@ export const productControllers = {
       );
       if (!data) {
         return res.status(400).json({
-          message: 'Update failed',
+          message: errorMessage.BAD_REQUEST,
         });
       }
       return res.status(201).json({
@@ -75,7 +76,7 @@ export const productControllers = {
       );
       if (!data) {
         return res.status(400).json({
-          message: 'Update failed',
+          message: errorMessage.BAD_REQUEST,
         });
       }
       return res.status(201).json({
@@ -96,7 +97,7 @@ export const productControllers = {
         });
       }
       return res.status(400).json({
-        message: 'Delete Failed',
+        message: errorMessage.BAD_REQUEST,
       });
     } catch (error) {
       next(error);
