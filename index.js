@@ -13,7 +13,9 @@ app.use(express.json());
 
 app.use('/api/v1', router);
 
+// Error Handling
 app.use(errorHandlerNotFound, errorHandler);
+
 await mongoose
   .connect(URI)
   .then(() => {
