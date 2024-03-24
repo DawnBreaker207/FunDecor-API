@@ -2,9 +2,37 @@ import mongoose from 'mongoose';
 
 const productSchema = new mongoose.Schema(
   {
-    name: {
+    title: {
       type: String,
       required: true,
+    },
+    discountPercentage: {
+      type: Number,
+      default: 0,
+    },
+    rating: {
+      type: Number,
+      default: 0,
+    },
+    stock: {
+      type: Number,
+      default: 0,
+    },
+    brand: {
+      type: String,
+      default: 'No brand',
+    },
+    category: {
+      type: String,
+      default: 'No category',
+    },
+    thumbnail: {
+      type: String,
+      default: '',
+    },
+    images: {
+      type: [String],
+      default: [],
     },
     price: {
       type: Number,
