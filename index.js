@@ -1,12 +1,12 @@
 import express from 'express';
 import router from './routes/index.js';
 import mongoose from 'mongoose';
-import 'dotenv/config';
 import cors from 'cors';
 import { errorHandler, errorHandlerNotFound } from './utils/errorHandler.js';
+import dotnet from 'dotenv';
+dotnet.config({ path: './.env.local' });
+const { PORT, URI } = process.env;
 
-const PORT = process.env.PORT;
-const URI = process.env.URI;
 const app = express();
 app.use(cors());
 app.use(express.json());

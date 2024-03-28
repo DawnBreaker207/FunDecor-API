@@ -1,12 +1,10 @@
 import User from '../models/user.js';
 import { checkEmail } from '../utils/checkExist.js';
-import { hashPassword } from '../utils/hashPassword.js';
+import { hashPassword, comparePassword } from '../utils/hashPassword.js';
 import { createToken } from '../utils/jwt.js';
-import { validAuth } from '../utils/validAuth.js';
+import { validBody } from '../utils/validBody.js';
 import { loginSchema, registerSchema } from '../validations/auth.js';
-
-import bcryptjs from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import { errorMessage, successMessages } from '../constants/message.js';
 export const register = async (req, res, next) => {
   try {
     // 1.Check data input
@@ -16,21 +14,29 @@ export const register = async (req, res, next) => {
     // 5.Notify success
 
     const { email, password } = req.body;
-    validAuth(req.body, registerSchema);
+    const resultValid = validBody(req.body, registerSchema);
+    if (resultValid) {
+      return res.status(400).json({ message: resultValid.errors });
+    }
     // ? B2 Check email exist ?
-    checkEmail(email);
+    const checkExist = checkEmail(email);
+    if (checkExist) {
+      return res.status(400).json({ message: errorMessage.EMAIL_EXIST });
+    }
 
     // B3: Encrypt password
-    hashPassword(password);
+    const hashPass = await hashPassword(password);
 
     // user.password = undefined;
     // B4: Create new user
 
-    const user = await User.create({ ...req.body, password: hashPassword });
+    const user = await User.create({ ...req.body, password: hashPass });
 
+    user.password = undefined;
     return res.status(201).json({
-      message: 'Register Success',
-      user: await user.save(),
+      message: successMessages.REGISTER_SUCCESS,
+      user,
+      // : await user.save(),
     });
   } catch (error) {
     next(error);
@@ -40,16 +46,19 @@ export const login = async (req, res, next) => {
   try {
     // Step 1: Validate
     const { email, password } = req.body;
-    validAuth(req.body, loginSchema);
+    const resultValid = validBody(req.body, loginSchema);
+    if (resultValid) {
+      return res.status(400).json({ message: resultValid.errors });
+    }
     // Step 2: Check email exist
     const userExist = await User.findOne({ email });
     if (!userExist) {
-      return res.status(400).json({ message: 'Email not exist' });
+      return res.status(400).json({ message: errorMessage.EMAIL_NOT_FOUND });
     }
     // Step 3: Check password exist
-    const passwordMatch = await bcryptjs.compare(password, userExist.password);
-    if (!passwordMatch) {
-      return res.status(400).json({ message: 'Password not exist' });
+    console.log(await comparePassword(password, userExist.password));
+    if (!(await comparePassword(password, userExist.password))) {
+      return res.status(400).json({ message: errorMessage.INVALID_PASSWORD });
     }
     // checkPassword(password)
     // Step 4: Create token => JWT
@@ -57,8 +66,8 @@ export const login = async (req, res, next) => {
 
     // Step 5: Return token for client
     userExist.password = undefined;
-    return res.status(200).json({
-      message: 'Login success',
+    return res.status(201).json({
+      message: successMessages.LOGIN_SUCCESS,
       userExist,
     });
   } catch (error) {
