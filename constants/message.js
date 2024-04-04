@@ -9,6 +9,8 @@ export const errorMessage = Object.freeze({
   PASSWORD_NOT_MATCH: 'Password not',
   TOKEN_INVALID: 'Token invalid',
   DELETE_FAIL: 'Delete fail',
+  INVALID_BODY_REQUEST: 'Invalid body request!',
+  PERMISSION_DENIED: 'Permission denied !',
 });
 
 export const successMessages = Object.freeze({

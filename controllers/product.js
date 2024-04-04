@@ -21,11 +21,8 @@ export const productControllers = {
   add: async (req, res, next) => {
     try {
       const data = await Product.create(req.body);
-      const resultValid = validBody(req.body, productSchema);
-      if (resultValid) {
-        return res.status(400).json({ message: resultValid.errors });
-      }
-      console.log(data);
+    
+     
       if (!data) {
         return res.status(400).json({ message: errorMessage.BAD_REQUEST });
       }
@@ -54,10 +51,7 @@ export const productControllers = {
   },
   update: async (req, res, next) => {
     try {
-      const resultValid = validBody(req.body, productSchema);
-      if (resultValid) {
-        return res.status(400).json({ message: resultValid.errors });
-      }
+      
       const data = await Product.findByIdAndUpdate(
         `${req.params.id}`,
         req.body,
@@ -79,10 +73,7 @@ export const productControllers = {
   //? SOFT DELETE. Should use this
   hide: async (req, res, next) => {
     try {
-      const resultValid = validBody(req.body, productSchema);
-      if (resultValid) {
-        return res.status(400).json({ message: resultValid.errors });
-      }
+      
       const data = await Product.findByIdAndUpdate(
         `${req.params.id}`,
         { hide: true },
