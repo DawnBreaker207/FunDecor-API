@@ -98,11 +98,18 @@ export const CategoryControllers = {
       }
 
       // ! Update product for categories deleted
+      const productsToUpdate = await Product.find({ category: req.params.id });
+      await Promise.all(
+        productsToUpdate.map(async (product) => {
+          product.category = '660fa2a046e7c73371b80946';
+          await product.save();
+        })
+      );
       const data = await Category.findByIdAndDelete(req.params.id);
 
       if (data) {
         return res.status(200).json({
-          message: successMessages.DELETE_CATEGORY_SUCCESS,
+          message: successMessages.DELETE_CATEGORY_SUCCESS || 'Successfully !',
         });
       }
       return res.status(400).json({
