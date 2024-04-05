@@ -1,11 +1,10 @@
 import { errorMessage, successMessages } from '../constants/message.js';
+import Category from '../models/Category.js';
 import Product from '../models/Product.js';
-import { validBody } from '../utils/validBody.js';
-import productSchema from '../validations/product.js';
 export const productControllers = {
   getAll: async (req, res, next) => {
     try {
-      const data = await Product.find({});
+      const data = await Product.find({}).populate('category');
 
       if (data && data.length > 0) {
         return res.status(200).json({
@@ -21,9 +20,15 @@ export const productControllers = {
   add: async (req, res, next) => {
     try {
       const data = await Product.create(req.body);
-    
-     
-      if (!data) {
+      const updateCategory = await Category.findByIdAndUpdate(
+        data.category,
+        {
+          $push: { products: data._id },
+        },
+        { new: true }
+      );
+
+      if (!data || !updateCategory) {
         return res.status(400).json({ message: errorMessage.BAD_REQUEST });
       }
       return res.status(201).json({
@@ -36,7 +41,7 @@ export const productControllers = {
   },
   getOne: async (req, res, next) => {
     try {
-      const data = await Product.findById(req.params.id);
+      const data = await Product.findById(req.params.id).populate('category');
 
       if (!data) {
         return res.status(400).json({ message: errorMessage.BAD_REQUEST });
@@ -51,13 +56,19 @@ export const productControllers = {
   },
   update: async (req, res, next) => {
     try {
-      
       const data = await Product.findByIdAndUpdate(
         `${req.params.id}`,
         req.body,
         { new: true }
       );
-      if (!data) {
+      const updateCategory = await Category.findByIdAndUpdate(
+        data.category,
+        {
+          $push: { products: data._id },
+        },
+        { new: true }
+      );
+      if (!data || !updateCategory) {
         return res.status(404).json({
           message: errorMessage.BAD_REQUEST,
         });
@@ -73,7 +84,6 @@ export const productControllers = {
   //? SOFT DELETE. Should use this
   hide: async (req, res, next) => {
     try {
-      
       const data = await Product.findByIdAndUpdate(
         `${req.params.id}`,
         { hide: true },

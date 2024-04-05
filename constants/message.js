@@ -14,16 +14,25 @@ export const errorMessage = Object.freeze({
 });
 
 export const successMessages = Object.freeze({
+  // Auth
   REGISTER_SUCCESS: 'Register successfully!',
   LOGIN_SUCCESS: 'Login successfully!',
+  RESET_PASSWORD_SUCCESS: 'Reset password successfully!',
+  // User
   GET_USER_SUCCESS: 'Get user successfully!',
   UPDATE_USER_SUCCESS: 'Update user successfully!',
   DELETE_USER_SUCCESS: 'Delete user successfully!',
+  // Profile
   GET_PROFILE_SUCCESS: 'Get profile successfully!',
-  RESET_PASSWORD_SUCCESS: 'Reset password successfully!',
   UPDATE_PROFILE_SUCCESS: 'Update profile successfully!',
+  // Product
   GET_PRODUCT_SUCCESS: 'Get product successfully!',
   CREATE_PRODUCT_SUCCESS: 'Create product successfully!',
   UPDATE_PRODUCT_SUCCESS: 'Update product successfully!',
   DELETE_PRODUCT_SUCCESS: 'Delete product successfully!',
+  // Category
+  GET_CATEGORY_SUCCESS: 'Get category successfully!',
+  CREATE_CATEGORY_SUCCESS: 'Create category successfully!',
+  UPDATE_CATEGORY_SUCCESS: 'Update category successfully!',
+  DELETE_CATEGORY_SUCCESS: 'Delete category successfully!',
 });
