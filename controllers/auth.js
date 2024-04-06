@@ -1,4 +1,4 @@
-import User from '../models/user.js';
+import User from '../models/User.js';
 import { hashPassword, comparePassword } from '../utils/hashPassword.js';
 import { createToken } from '../utils/jwt.js';
 import { errorMessage, successMessages } from '../constants/message.js';
@@ -55,7 +55,7 @@ export const login = async (req, res, next) => {
     const token = createToken({ _id: userExist._id }, '10d');
 
     // Step 5: Return token for client
-    
+
     userExist.password = undefined;
     return res.status(201).json({
       message: successMessages.LOGIN_SUCCESS,

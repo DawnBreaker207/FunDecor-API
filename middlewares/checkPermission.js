@@ -1,4 +1,4 @@
-import { errorMessage } from '../constants/message';
+import { errorMessage } from '../constants/message.js';
 
 export const checkPermission = (roles) => (req, res, next) => {
   //! roles = ['admin', 'manager', 'pm'] => role
