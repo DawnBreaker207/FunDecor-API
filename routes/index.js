@@ -2,6 +2,7 @@ import { Router } from 'express';
 import productRouter from './product.js';
 import authRouter from './auth.js';
 import categoryRouter from './category.js';
+// import showPath from '../utils/showPath.js';
 
 const router = Router();
 
