@@ -1,7 +1,7 @@
 # RESTFul-Nodejs
 
 - This is a services server using Nodejs, Express and MongoDB 
-- [***API***](https://restful-nodejs.onrender.com/api/v1/products)
+- [***API***](https://restful-nodejs.onrender.com/api/v1)
 - The server data is:
   - validate by [***Joi***](https://www.npmjs.com/package/joi)
   - Encrypt by [***Bcryptjs***](https://www.npmjs.com/package/bcryptjs)
