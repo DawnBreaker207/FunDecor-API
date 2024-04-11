@@ -2,12 +2,13 @@ import { Router } from 'express';
 import productRouter from './product.js';
 import authRouter from './auth.js';
 import categoryRouter from './category.js';
-// import showPath from '../utils/showPath.js';
+import routeImages from './upload.js';
 
 const router = Router();
 
 router.use('/products', productRouter);
 router.use('/categories', categoryRouter);
 router.use('/auth', authRouter);
+router.use('/images', routeImages);
 
 export default router;

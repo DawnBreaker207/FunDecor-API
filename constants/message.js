@@ -35,4 +35,7 @@ export const successMessages = Object.freeze({
   CREATE_CATEGORY_SUCCESS: 'Create category successfully!',
   UPDATE_CATEGORY_SUCCESS: 'Update category successfully!',
   DELETE_CATEGORY_SUCCESS: 'Delete category successfully!',
+  // Images
+  UPDATE_IMAGES_SUCCESS: 'Update images successfully!',
+  DELETE_IMAGES_SUCCESS: 'Delete images successfully!',
 });
