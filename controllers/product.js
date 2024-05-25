@@ -3,12 +3,24 @@ import Category from '../models/Category.js';
 import Product from '../models/Product.js';
 export const productControllers = {
   getAll: async (req, res, next) => {
-    try {
-      const data = await Product.find({}).populate('category');
+    const { page = 1, limit = 20 } = req.query;
 
+    try {
+      parseInt(limit);
+      parseInt(page) || 1;
+      const data = await Product.find({})
+        .limit(limit * 1)
+        .skip((page - 1) * limit)
+        .sort({ createdAt: 1 })
+        .populate('category');
+
+      const COUNT = await Product.countDocuments();
       if (data && data.length > 0) {
         return res.status(200).json({
           message: successMessages.GET_PRODUCT_SUCCESS,
+          Total: data.length,
+          totalPages: Math.ceil(COUNT / limit),
+          currentPage: page,
           data,
         });
       }
