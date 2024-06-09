@@ -11,6 +11,7 @@ export const errorMessage = Object.freeze({
   DELETE_FAIL: 'Delete fail',
   INVALID_BODY_REQUEST: 'Invalid body request!',
   PERMISSION_DENIED: 'Permission denied !',
+  UPLOAD_IMAGES_FAIL: 'Update images failed!',
 });
 
 export const successMessages = Object.freeze({

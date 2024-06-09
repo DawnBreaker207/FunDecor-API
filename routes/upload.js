@@ -1,10 +1,10 @@
-// import { Router } from 'express';
-// import { removeImages, uploadImages } from '../controllers/images.js';
-// import { uploadImagesMiddleware } from '../middlewares/uploadImages.js';
+import { Router } from 'express';
+import { uploadImages } from '../controllers/images.js';
+import { upload } from '../middlewares/uploadImages.js';
+import multer from 'multer';
+const routeImages = Router();
 
-// const routeImages = Router();
-
-// routeImages.post('/upload', uploadImagesMiddleware('images', 10), uploadImages);
+routeImages.post('/upload', upload.single('upload'), uploadImages);
 // routeImages.delete('/remove/:publicId', removeImages);
 
-// export default routeImages;
+export default routeImages;

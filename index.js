@@ -5,11 +5,21 @@ import { errorHandler, errorHandlerNotFound } from './utils/errorHandler.js';
 import { PORT } from './utils/env.js';
 import connect from './utils/connect.js';
 import expressListEndpoints from 'express-list-endpoints';
+import multer from 'multer';
+import compression from 'compression';
+import morgan from 'morgan';
+import helmet from 'helmet';
 
 const app = express();
+//! Init Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(compression());
+app.use(morgan('dev'));
+app.use(helmet());
 
+//! Init Router
 app.use('/api/v1', router);
 app.get('/api/v1', (req, res) => {
   const routeList = expressListEndpoints(app);
@@ -77,8 +87,10 @@ app.get('/api/v1', (req, res) => {
   `;
   return res.status(200).send(simpleHTML);
 });
+
+//! Init Database
 connect();
-// Error Handling
+//! Error Handling
 app.use(errorHandlerNotFound, errorHandler);
 
 app.listen(PORT, () => {
