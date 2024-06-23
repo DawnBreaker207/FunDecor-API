@@ -1,7 +1,7 @@
-import User from '../models/User.js';
-import { hashPassword, comparePassword } from '../utils/hashPassword.js';
-import { createToken } from '../utils/jwt.js';
 import { errorMessage, successMessages } from '../constants/message.js';
+import User from '../models/User.js';
+import { comparePassword, hashPassword } from '../utils/hashPassword.js';
+import { createToken } from '../utils/jwt.js';
 export const register = async (req, res, next) => {
   try {
     // 1.Check data input

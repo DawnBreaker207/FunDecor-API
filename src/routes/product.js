@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import { productControllers } from '../controllers/product.js';
-import productSchema from '../validations/product.js';
-import validBodyRequest from '../middlewares/validBodyRequest.js';
 import { checkAuth } from '../middlewares/checkAuth.js';
 import { checkIsAdmin } from '../middlewares/checkIsAdmin.js';
+import validBodyRequest from '../middlewares/validBodyRequest.js';
+import productSchema from '../validations/product.js';
 
 const productRouter = Router();
 
