@@ -1,8 +1,12 @@
-import { errorMessage, successMessages } from '../constants/message.js';
-import Category from '../models/Category.js';
+import { NextFunction, Request, Response } from 'express';
+
+import { Types } from 'mongoose';
+import { errorMessage, successMessages } from '../constants/message';
+import Category from '../models/Category';
+import Product from '../models/Product';
 
 export const CategoryControllers = {
-  getAll: async (req, res, next) => {
+  getAll: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = await Category.find({}).populate('products');
 
@@ -17,7 +21,7 @@ export const CategoryControllers = {
       next(error);
     }
   },
-  add: async (req, res, next) => {
+  add: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = await Category.create(req.body);
 
@@ -25,14 +29,14 @@ export const CategoryControllers = {
         return res.status(400).json({ message: errorMessage.BAD_REQUEST });
       }
       return res.status(201).json({
-        message: successMessages.CREATE_SUCCESS,
+        message: successMessages.CREATE_CATEGORY_SUCCESS,
         data,
       });
     } catch (error) {
       next(error);
     }
   },
-  getOne: async (req, res, next) => {
+  getOne: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = await Category.findById(req.params.id).populate('products');
 
@@ -47,7 +51,7 @@ export const CategoryControllers = {
       next(error);
     }
   },
-  update: async (req, res, next) => {
+  update: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = await Category.findByIdAndUpdate(
         `${req.params.id}`,
@@ -68,7 +72,7 @@ export const CategoryControllers = {
     }
   },
   //? SOFT DELETE. Should use this
-  hide: async (req, res, next) => {
+  hide: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = await Category.findByIdAndUpdate(
         `${req.params.id}`,
@@ -89,7 +93,7 @@ export const CategoryControllers = {
     }
   },
   //! HARD DELETE. Not use this
-  delete: async (req, res, next) => {
+  delete: async (req: Request, res: Response, next: NextFunction) => {
     try {
       if (req.params.id === '660fa2a046e7c73371b80946') {
         return res.status(400).json({
@@ -101,7 +105,7 @@ export const CategoryControllers = {
       const productsToUpdate = await Product.find({ category: req.params.id });
       await Promise.all(
         productsToUpdate.map(async (product) => {
-          product.category = '660fa2a046e7c73371b80946';
+          product.category = new Types.ObjectId('660fa2a046e7c73371b80946');
           await product.save();
         })
       );

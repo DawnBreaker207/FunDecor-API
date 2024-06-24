@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { productControllers } from '../controllers/product.js';
-import { checkAuth } from '../middlewares/checkAuth.js';
-import { checkIsAdmin } from '../middlewares/checkIsAdmin.js';
-import validBodyRequest from '../middlewares/validBodyRequest.js';
-import productSchema from '../validations/product.js';
+import { productControllers } from '../controllers/product';
+import { checkAuth } from '../middlewares/checkAuth';
+import { checkIsAdmin } from '../middlewares/checkIsAdmin';
+import validBodyRequest from '../middlewares/validBodyRequest';
+import productSchema from '../validations/product';
 
 const productRouter = Router();
 

@@ -1,10 +1,12 @@
 import { Router } from 'express';
+import { CategoryControllers } from '../controllers/category';
+import { checkAuth } from '../middlewares/checkAuth';
+import { checkIsAdmin } from '../middlewares/checkIsAdmin';
+import validBodyRequest from '../middlewares/validBodyRequest';
+import CategorySchema from '../validations/category';
 
-import { CategoryControllers } from '../controllers/category.js';
-import { checkAuth } from '../middlewares/checkAuth.js';
-import { checkIsAdmin } from '../middlewares/checkIsAdmin.js';
-import validBodyRequest from '../middlewares/validBodyRequest.js';
-import CategorySchema from '../validations/category.js';
+
+
 
 const categoryRouter = Router();
 

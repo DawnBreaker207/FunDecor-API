@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
-import { URI } from './env.js';
+import { URI } from './env';
 
 const connect = async () => {
   await mongoose
-    .connect(URI)
+    .connect(URI as string)
     .then(() => {
       console.log(`Welcome to MongoDB`);
     })

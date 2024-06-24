@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
+import { ProductType } from '../interfaces/Product';
 
-const productSchema = new mongoose.Schema(
+const productSchema = new mongoose.Schema<ProductType>(
   {
     title: {
       type: String,
@@ -50,4 +51,4 @@ const productSchema = new mongoose.Schema(
   { timestamps: true, versionKey: false }
 );
 
-export default mongoose.model('Product', productSchema);
+export default mongoose.model<ProductType>('Product', productSchema);

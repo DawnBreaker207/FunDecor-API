@@ -1,13 +1,16 @@
-import { errorMessage, successMessages } from '../constants/message.js';
-import Category from '../models/Category.js';
-import Product from '../models/Product.js';
+import { NextFunction, Request, Response } from 'express';
+import { errorMessage, successMessages } from '../constants/message';
+import Category from '../models/Category';
+import Product from '../models/Product';
+
 export const productControllers = {
-  getAll: async (req, res, next) => {
-    const { page = 1, limit = 20 } = req.query;
+  getAll: async (req: Request, res: Response, next: NextFunction) => {
+    const { page = 1, limit = 20 } = req.query as unknown as {
+      page: number;
+      limit: number;
+    };
 
     try {
-      parseInt(limit);
-      parseInt(page) || 1;
       const data = await Product.find({})
         .limit(limit * 1)
         .skip((page - 1) * limit)
@@ -29,7 +32,7 @@ export const productControllers = {
       next(error);
     }
   },
-  add: async (req, res, next) => {
+  add: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = await Product.create(req.body);
       const updateCategory = await Category.findByIdAndUpdate(
@@ -51,7 +54,7 @@ export const productControllers = {
       next(error);
     }
   },
-  getOne: async (req, res, next) => {
+  getOne: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = await Product.findById(req.params.id).populate('category');
 
@@ -66,17 +69,20 @@ export const productControllers = {
       next(error);
     }
   },
-  update: async (req, res, next) => {
+  update: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = await Product.findByIdAndUpdate(
         `${req.params.id}`,
         req.body,
         { new: true }
       );
+      if (!data) {
+        res.status(400).json({ message: errorMessage.NOT_FOUND });
+      }
       const updateCategory = await Category.findByIdAndUpdate(
-        data.category,
+        data?.category,
         {
-          $push: { products: data._id },
+          $push: { products: data?._id },
         },
         { new: true }
       );
@@ -94,7 +100,7 @@ export const productControllers = {
     }
   },
   //? SOFT DELETE. Should use this
-  hide: async (req, res, next) => {
+  hide: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = await Product.findByIdAndUpdate(
         `${req.params.id}`,
@@ -115,7 +121,7 @@ export const productControllers = {
     }
   },
   //! HARD DELETE. Not use this
-  delete: async (req, res, next) => {
+  delete: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = await Product.findByIdAndDelete(req.params.id);
 

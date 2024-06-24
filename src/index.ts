@@ -3,10 +3,13 @@ import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import router from './routes/index.js';
-import connect from './utils/connect.js';
-import { PORT } from './utils/env.js';
-import { errorHandler, errorHandlerNotFound } from './utils/errorHandler.js';
+
+import { errorHandler, errorHandlerNotFound } from './utils/errorHandler';
+
+import connect from './utils/connect';
+import { PORT } from './utils/env';
+import router from './routes/index';
+import redirectPath from './middlewares/redirectPath';
 
 const app = express();
 //! Init Middleware
@@ -16,14 +19,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(compression());
 app.use(morgan('dev'));
 app.use(helmet());
-
+app.use(redirectPath);
 //! Init Router
 app.use('/api/v1', router);
 
 //! Init Database
 connect();
 //! Error Handling
-app.use(errorHandlerNotFound, errorHandler);
+// app.use(errorHandlerNotFound, errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Welcome to server`);

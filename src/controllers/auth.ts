@@ -1,8 +1,10 @@
-import { errorMessage, successMessages } from '../constants/message.js';
-import User from '../models/User.js';
-import { comparePassword, hashPassword } from '../utils/hashPassword.js';
-import { createToken } from '../utils/jwt.js';
-export const register = async (req, res, next) => {
+import { RequestHandler } from 'express';
+import { errorMessage, successMessages } from '../constants/message';
+import User from '../models/User';
+import { comparePassword, hashPassword } from '../utils/hashPassword';
+import { createToken } from '../utils/jwt';
+
+export const register: RequestHandler = async (req, res, next) => {
   try {
     // 1.Check data input
     // 2.Check email exist
@@ -35,7 +37,7 @@ export const register = async (req, res, next) => {
   }
 };
 
-export const login = async (req, res, next) => {
+export const login: RequestHandler = async (req, res, next) => {
   try {
     // Step 1: Validate
     const { email, password } = req.body;
@@ -47,7 +49,7 @@ export const login = async (req, res, next) => {
     }
     // Step 3: Check password exist
     // console.log(await comparePassword(password, userExist.password));
-    if (!(await comparePassword(password, userExist.password))) {
+    if (!(await comparePassword(password, userExist.password as string))) {
       return res.status(400).json({ message: errorMessage.INVALID_PASSWORD });
     }
     // checkPassword(password)

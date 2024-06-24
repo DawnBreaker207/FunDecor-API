@@ -1,6 +1,8 @@
 import { Router } from 'express';
-import { uploadImages } from '../controllers/images.js';
-import { upload } from '../middlewares/uploadImages.js';
+import { uploadImages } from '../controllers/images';
+import { upload } from '../middlewares/uploadImages';
+
+
 const routeImages = Router();
 
 routeImages.post('/upload', upload.single('upload'), uploadImages);

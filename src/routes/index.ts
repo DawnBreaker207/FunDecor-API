@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import authRouter from './auth.js';
-import categoryRouter from './category.js';
-import productRouter from './product.js';
-import routeImages from './upload.js';
 
+import authRouter from './auth';
+import categoryRouter from './category';
+import productRouter from './product';
+import routeImages from './upload';
 const router = Router();
 
 router.use('/products', productRouter);

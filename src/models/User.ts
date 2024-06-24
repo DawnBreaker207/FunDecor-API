@@ -1,15 +1,16 @@
 import mongoose from 'mongoose';
+import { UserType } from '../interfaces/User';
 
-const userSchema = new mongoose.Schema(
+const userSchema = new mongoose.Schema<UserType>(
   {
     name: {
       type: String,
-      // unique: true,
-      // required: true,
+      unique: true,
+      required: true,
     },
     email: {
       type: String,
-      // unique: true,
+      unique: true,
       require: true,
     },
     password: { type: String, required: true },
@@ -17,10 +18,11 @@ const userSchema = new mongoose.Schema(
     role: { type: String, default: 'member' },
     avatar: { type: String },
     address: { type: String },
-    phoneNumber: { type: String, 
-      // unique: true 
+    phoneNumber: {
+      type: String,
+      unique: true,
     },
   },
   { timestamps: true, versionKey: false }
 );
-export default mongoose.model('User', userSchema);
+export default mongoose.model<UserType>('User', userSchema);

@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
+import { CategoryType } from '../interfaces/Category';
 
-const categorySchema = new mongoose.Schema(
+const categorySchema = new mongoose.Schema<CategoryType>(
   {
     name: {
       type: String,
@@ -25,4 +26,4 @@ const categorySchema = new mongoose.Schema(
     versionKey: false,
   }
 );
-export default mongoose.model('Category', categorySchema);
+export default mongoose.model<CategoryType>('Category', categorySchema);
