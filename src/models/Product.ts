@@ -6,6 +6,7 @@ const productSchema = new mongoose.Schema<ProductType>(
     title: {
       type: String,
       required: true,
+      lowercase: true,
     },
     discountPercentage: {
       type: Number,
@@ -43,6 +44,12 @@ const productSchema = new mongoose.Schema<ProductType>(
     description: {
       type: String,
     },
+    attributes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Attribute',
+      },
+    ],
     hide: {
       type: Boolean,
       default: false,

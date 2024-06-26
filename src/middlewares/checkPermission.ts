@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import { errorMessage } from '../constants/message';
-
+import { messageError } from '../constants/message';
+import { statusCode } from '../constants/statusCode';
 
 export const checkPermission =
   (roles: string[]) => (req: Request, res: Response, next: NextFunction) => {
@@ -12,8 +12,8 @@ export const checkPermission =
     );
 
     if (!hashPermission) {
-      return res.status(403).json({
-        message: errorMessage.PERMISSION_DENIED,
+      return res.status(statusCode.FORBIDDEN).json({
+        message: messageError.PERMISSION_DENIED,
       });
     }
     next();

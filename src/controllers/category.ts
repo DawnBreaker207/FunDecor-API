@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
-
 import { Types } from 'mongoose';
-import { errorMessage, successMessages } from '../constants/message';
+import { messageError, messagesSuccess } from '../constants/message';
 import Category from '../models/Category';
 import Product from '../models/Product';
+import { statusCode } from '../constants/statusCode';
 
 export const CategoryControllers = {
   getAll: async (req: Request, res: Response, next: NextFunction) => {
@@ -11,12 +11,14 @@ export const CategoryControllers = {
       const data = await Category.find({}).populate('products');
 
       if (data && data.length > 0) {
-        return res.status(200).json({
-          message: successMessages.GET_CATEGORY_SUCCESS,
+        return res.status(statusCode.OK).json({
+          message: messagesSuccess.GET_CATEGORY_SUCCESS,
           data,
         });
       }
-      return res.status(404).json({ message: errorMessage.NOT_FOUND });
+      return res
+        .status(statusCode.NOT_FOUND)
+        .json({ message: messageError.NOT_FOUND });
     } catch (error) {
       next(error);
     }
@@ -26,10 +28,12 @@ export const CategoryControllers = {
       const data = await Category.create(req.body);
 
       if (!data) {
-        return res.status(400).json({ message: errorMessage.BAD_REQUEST });
+        return res
+          .status(statusCode.BAD_REQUEST)
+          .json({ message: messageError.BAD_REQUEST });
       }
-      return res.status(201).json({
-        message: successMessages.CREATE_CATEGORY_SUCCESS,
+      return res.status(statusCode.CREATED).json({
+        message: messagesSuccess.CREATE_CATEGORY_SUCCESS,
         data,
       });
     } catch (error) {
@@ -41,10 +45,12 @@ export const CategoryControllers = {
       const data = await Category.findById(req.params.id).populate('products');
 
       if (!data) {
-        return res.status(400).json({ message: errorMessage.BAD_REQUEST });
+        return res
+          .status(statusCode.BAD_REQUEST)
+          .json({ message: messageError.BAD_REQUEST });
       }
-      return res.status(201).json({
-        message: successMessages.GET_CATEGORY_SUCCESS,
+      return res.status(statusCode.CREATED).json({
+        message: messagesSuccess.GET_CATEGORY_SUCCESS,
         data,
       });
     } catch (error) {
@@ -59,12 +65,12 @@ export const CategoryControllers = {
         { new: true }
       );
       if (!data) {
-        return res.status(404).json({
-          message: errorMessage.BAD_REQUEST,
+        return res.status(statusCode.NOT_FOUND).json({
+          message: messageError.BAD_REQUEST,
         });
       }
-      return res.status(201).json({
-        message: successMessages.UPDATE_CATEGORY_SUCCESS,
+      return res.status(statusCode.CREATED).json({
+        message: messagesSuccess.UPDATE_CATEGORY_SUCCESS,
         data,
       });
     } catch (error) {
@@ -80,12 +86,12 @@ export const CategoryControllers = {
         { new: true }
       );
       if (!data) {
-        return res.status(400).json({
-          message: errorMessage.BAD_REQUEST,
+        return res.status(statusCode.BAD_REQUEST).json({
+          message: messageError.BAD_REQUEST,
         });
       }
-      return res.status(201).json({
-        message: successMessages.UPDATE_CATEGORY_SUCCESS,
+      return res.status(statusCode.CREATED).json({
+        message: messagesSuccess.UPDATE_CATEGORY_SUCCESS,
         data,
       });
     } catch (error) {
@@ -96,7 +102,7 @@ export const CategoryControllers = {
   delete: async (req: Request, res: Response, next: NextFunction) => {
     try {
       if (req.params.id === '660fa2a046e7c73371b80946') {
-        return res.status(400).json({
+        return res.status(statusCode.BAD_REQUEST).json({
           message: "Can't delete default categories !",
         });
       }
@@ -112,12 +118,12 @@ export const CategoryControllers = {
       const data = await Category.findByIdAndDelete(req.params.id);
 
       if (data) {
-        return res.status(200).json({
-          message: successMessages.DELETE_CATEGORY_SUCCESS || 'Successfully !',
+        return res.status(statusCode.OK).json({
+          message: messagesSuccess.DELETE_CATEGORY_SUCCESS || 'Successfully !',
         });
       }
-      return res.status(400).json({
-        message: errorMessage.DELETE_FAIL,
+      return res.status(statusCode.BAD_REQUEST).json({
+        message: messageError.DELETE_FAIL,
       });
     } catch (error) {
       next(error);

@@ -6,10 +6,10 @@ import morgan from 'morgan';
 
 import { errorHandler, errorHandlerNotFound } from './utils/errorHandler';
 
+import redirectPath from './middlewares/redirectPath';
+import router from './routes/index';
 import connect from './utils/connect';
 import { PORT } from './utils/env';
-import router from './routes/index';
-import redirectPath from './middlewares/redirectPath';
 
 const app = express();
 //! Init Middleware
@@ -26,7 +26,7 @@ app.use('/api/v1', router);
 //! Init Database
 connect();
 //! Error Handling
-// app.use(errorHandlerNotFound, errorHandler);
+app.use(errorHandlerNotFound, errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Welcome to server`);

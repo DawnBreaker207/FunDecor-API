@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { Schema, ValidationErrorItem } from 'joi';
-import { errorMessage } from '../constants/message';
+import { messageError } from '../constants/message';
+import { statusCode } from '../constants/statusCode';
 
 const validBodyRequest =
   (schema: Schema) =>
@@ -13,8 +14,8 @@ const validBodyRequest =
         const errors = error.details.map(
           (item: ValidationErrorItem) => item.message
         );
-        return res.status(400).json({
-          message: errorMessage.INVALID_BODY_REQUEST,
+        return res.status(statusCode.BAD_REQUEST).json({
+          message: messageError.INVALID_BODY_REQUEST,
           errors,
         });
       }

@@ -1,35 +1,38 @@
 import { RequestHandler } from 'express';
-import { errorMessage, successMessages } from '../constants/message';
+import { messageError, messagesSuccess } from '../constants/message';
 import User from '../models/User';
 import { comparePassword, hashPassword } from '../utils/hashPassword';
 import { createToken } from '../utils/jwt';
+import { statusCode } from '../constants/statusCode';
 
 export const register: RequestHandler = async (req, res, next) => {
   try {
-    // 1.Check data input
-    // 2.Check email exist
-    // 3.Encrypt password
-    // 4.Create new user
-    // 5.Notify success
+    //* 1.Check data input
+    //* 2.Check email exist
+    //* 3.Encrypt password
+    //* 4.Create new user
+    //* 5.Notify success
 
     const { email, password } = req.body;
 
-    // ? B2 Check email exist ?
+    //* B2 Check email exist ?
     const checkEmail = await User.findOne({ email });
     if (checkEmail) {
-      return res.status(400).json({ message: errorMessage.EMAIL_EXIST });
+      return res
+        .status(statusCode.BAD_REQUEST)
+        .json({ message: messageError.EMAIL_EXIST });
     }
 
-    // B3: Encrypt password
+    //* B3: Encrypt password
     const hashPass = await hashPassword(password);
 
-    // B4: Create new user
+    //* B4: Create new user
 
     const user = await User.create({ ...req.body, password: hashPass });
 
     user.password = undefined;
-    return res.status(201).json({
-      message: successMessages.REGISTER_SUCCESS,
+    return res.status(statusCode.CREATED).json({
+      message: messagesSuccess.REGISTER_SUCCESS,
       user,
     });
   } catch (error) {
@@ -39,28 +42,30 @@ export const register: RequestHandler = async (req, res, next) => {
 
 export const login: RequestHandler = async (req, res, next) => {
   try {
-    // Step 1: Validate
+    //* Step 1: Validate
     const { email, password } = req.body;
 
-    // Step 2: Check email exist
+    //* Step 2: Check email exist
     const userExist = await User.findOne({ email });
     if (!userExist) {
-      return res.status(400).json({ message: errorMessage.EMAIL_NOT_FOUND });
+      return res
+        .status(statusCode.BAD_REQUEST)
+        .json({ message: messageError.EMAIL_NOT_FOUND });
     }
-    // Step 3: Check password exist
-    // console.log(await comparePassword(password, userExist.password));
+    //* Step 3: Check password exist
     if (!(await comparePassword(password, userExist.password as string))) {
-      return res.status(400).json({ message: errorMessage.INVALID_PASSWORD });
+      return res
+        .status(statusCode.BAD_REQUEST)
+        .json({ message: messageError.INVALID_PASSWORD });
     }
-    // checkPassword(password)
-    // Step 4: Create token => JWT
+    //* Step 4: Create token => JWT
     const token = createToken({ _id: userExist._id }, '10d');
 
-    // Step 5: Return token for client
+    //* Step 5: Return token for client
 
     userExist.password = undefined;
-    return res.status(201).json({
-      message: successMessages.LOGIN_SUCCESS,
+    return res.status(statusCode.CREATED).json({
+      message: messagesSuccess.LOGIN_SUCCESS,
       token,
       user: userExist,
     });

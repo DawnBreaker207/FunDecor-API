@@ -1,25 +1,30 @@
 import { RequestHandler } from 'express';
 import handleUpload from '../configs/cloudinaryConfig';
-import { errorMessage, successMessages } from '../constants/message';
+import { messageError, messagesSuccess } from '../constants/message';
+import { statusCode } from '../constants/statusCode';
 
 export const uploadImages: RequestHandler = async (req, res, next) => {
   try {
     const file = req.file;
     if (!file) {
-      return res.status(400).json({ error: errorMessage.BAD_REQUEST });
+      return res
+        .status(statusCode.BAD_REQUEST)
+        .json({ error: messageError.BAD_REQUEST });
     }
 
     const b64 = Buffer.from(file.buffer).toString('base64');
     let dataURI = 'data:' + req?.file?.mimetype + ';base64,' + b64;
     const data = await handleUpload(dataURI);
     if (data) {
-      return res.status(200).json({
-        message: successMessages.UPDATE_IMAGES_SUCCESS,
+      return res.status(statusCode.CREATED).json({
+        message: messagesSuccess.UPDATE_IMAGES_SUCCESS,
         data,
       });
     }
-    return res.status(404).json({ message: errorMessage.UPLOAD_IMAGES_FAIL });
+    return res
+      .status(statusCode.NOT_FOUND)
+      .json({ message: messageError.UPLOAD_IMAGES_FAIL });
   } catch (error) {
-    next();
+    next(error);
   }
 };

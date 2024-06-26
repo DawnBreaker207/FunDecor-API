@@ -1,7 +1,7 @@
 import { Types } from 'mongoose';
 
 export interface ProductType {
-  id_?: string | number;
+  _id?: Types.ObjectId | string | number;
   title: string;
   discountPercentage?: number;
   rating?: number;
@@ -13,4 +13,5 @@ export interface ProductType {
   price: number;
   description: string;
   hide?: boolean;
+  attributes?: Types.ObjectId[];
 }

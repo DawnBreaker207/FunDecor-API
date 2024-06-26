@@ -2,10 +2,9 @@ import { Router } from 'express';
 import { uploadImages } from '../controllers/images';
 import { upload } from '../middlewares/uploadImages';
 
+const imageRoute = Router();
 
-const routeImages = Router();
+imageRoute.post('/upload', upload.single('upload'), uploadImages);
+// imageRoute.delete('/remove/:publicId', removeImages);
 
-routeImages.post('/upload', upload.single('upload'), uploadImages);
-// routeImages.delete('/remove/:publicId', removeImages);
-
-export default routeImages;
+export default imageRoute;
