@@ -1,12 +1,11 @@
 import { Router } from 'express';
+
 import authRouter from './auth.route';
 import cartRouter from './cart.route';
 import categoryRouter from './category.route';
 import orderRoute from './order.route';
 import productRouter from './product.route';
 import imageRoute from './upload.route';
-
-
 const router = Router();
 
 router.use('/products', productRouter);

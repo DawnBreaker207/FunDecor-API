@@ -1,19 +1,21 @@
 import { NextFunction, Request, Response } from 'express';
 
-import Category from '../models/Category';
-import Product from '../models/Product';
+import { SortOrder } from 'mongoose';
 import { messageError, messagesSuccess } from '../constants/message';
 import { statusCode } from '../constants/statusCode';
+import Category from '../models/Category.model';
+import Product from '../models/Product.model';
+import { log } from 'console';
 
 export const productControllers = {
-  getAll: async (req: Request, res: Response, next: NextFunction) => {
-    const { _page = 1, _limit = 20 } = req.query as unknown as {
+  Get_All_Product: async (req: Request, res: Response, next: NextFunction) => {
+    const { _page = 1, _limit = 10 } = req.query as unknown as {
       _page: number;
       _limit: number;
     };
 
     try {
-      const data = await Product.find({})
+      const data = await Product.find({ ...req.query })
         .limit(_limit * 1)
         .skip((_page - 1) * _limit)
         .sort({ createdAt: 1 })
@@ -36,7 +38,55 @@ export const productControllers = {
       next(error);
     }
   },
-  add: async (req: Request, res: Response, next: NextFunction) => {
+  // Query_Product: async (req: Request, res: Response, next: NextFunction) => {
+  //   const page = parseInt(req.query._page as string) - 1 || 0;
+  //   const limit = parseInt(req.query._limit as string) || 5;
+  //   const search = (req.query._search as string) || '';
+  //   const sort = (req.query._sort as string) || 'price';
+  //   let category: string | string[] = (req.query._category as string) || 'All';
+  //   let categoryOptions = await Category.find().populate('products');
+  //   try {
+  //     category === 'All'
+  //       ? (category = categoryOptions.map((cat) => cat._id.toString()))
+  //       : (category = (req?.query?._category as string).split(','));
+
+  //     // req.query._sort ? (sort = req.query._sort.split(',')) : (sort = [sort]);
+  //     const sortArray = sort.split(',');
+  //     let sortBy: { [key: string]: SortOrder } = {};
+  //     if (sortArray[1]) {
+  //       sortBy[sortArray[0]] = sortArray[1] as SortOrder;
+  //     } else {
+  //       sortBy[sortArray[0]] = 'asc';
+  //     }
+  //     console.log(sort, sortBy);
+
+  //     const productQuery = await Product.find({
+  //       title: { $regex: search, $options: 'i' },
+  //     })
+  //       .where('category')
+  //       // .in([...category])
+  //       .sort(sortBy)
+  //       .skip(page * limit)
+  //       .limit(limit);
+
+  //     const total = await Product.countDocuments({
+  //       category: { $in: [...category] },
+  //       name: { $regex: search, $options: 'i' },
+  //     });
+  //     const response = {
+  //       // error: false,
+  //       total,
+  //       page: page + 1,
+  //       limit,
+  //       // category: categoryOptions,
+  //       productQuery,
+  //     };
+  //     res.status(200).json(response);
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // },
+  Create_Product: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = await Product.create(req.body);
       const updateCategory = await Category.findByIdAndUpdate(
@@ -60,7 +110,7 @@ export const productControllers = {
       next(error);
     }
   },
-  getOne: async (req: Request, res: Response, next: NextFunction) => {
+  Get_One_Product: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = await Product.findById(req.params.id).populate('category');
 
@@ -77,7 +127,7 @@ export const productControllers = {
       next(error);
     }
   },
-  update: async (req: Request, res: Response, next: NextFunction) => {
+  Update_Product: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = await Product.findByIdAndUpdate(
         `${req.params.id}`,
@@ -110,7 +160,7 @@ export const productControllers = {
     }
   },
   //? SOFT DELETE. Should use this
-  hide: async (req: Request, res: Response, next: NextFunction) => {
+  Hide_Product: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = await Product.findByIdAndUpdate(
         `${req.params.id}`,
@@ -131,7 +181,7 @@ export const productControllers = {
     }
   },
   //! HARD DELETE. Not use this
-  delete: async (req: Request, res: Response, next: NextFunction) => {
+  Delete_Product: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = await Product.findByIdAndDelete(req.params.id);
 

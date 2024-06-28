@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
-import { UserType } from '../interfaces/User';
-import User from '../models/User';
+import { UserType } from '../interfaces/User.interface';
+import User from '../models/User.model';
 import { verifyToken } from '../utils/jwt';
 import { messageError } from '../constants/message';
 import { statusCode } from '../constants/statusCode';

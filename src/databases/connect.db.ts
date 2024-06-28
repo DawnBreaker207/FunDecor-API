@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { URI } from './env';
+import { URI } from '../utils/env';
 
 const connect = async () => {
   await mongoose

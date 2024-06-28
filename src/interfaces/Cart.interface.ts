@@ -1,5 +1,5 @@
 import { Types } from 'mongoose';
-import { ProductType } from './Product';
+import { ProductType } from './Product.interface';
 
 export interface ProductCart {
   productId: ProductType;

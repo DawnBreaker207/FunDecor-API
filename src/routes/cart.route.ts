@@ -4,7 +4,7 @@ import {
   getCartByUserId,
   removeFromCart,
   updateProductQuantity,
-} from '../controllers/cart';
+} from '../controllers/cart.controller';
 
 const cartRouter = Router();
 

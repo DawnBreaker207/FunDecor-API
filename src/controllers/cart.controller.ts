@@ -3,8 +3,8 @@ import { Types } from 'mongoose';
 
 import { messageError } from '../constants/message';
 import { statusCode } from '../constants/statusCode';
-import Cart from '../models/Cart';
-import { ProductCart } from '../interfaces/Cart';
+import Cart from '../models/Cart.model';
+import { ProductCart } from '../interfaces/Cart.interface';
 
 export const getCartByUserId: RequestHandler = async (req, res, next) => {
   //* GET /cart/userId

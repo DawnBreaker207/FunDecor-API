@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from 'express';
 import { Types } from 'mongoose';
 import { messageError, messagesSuccess } from '../constants/message';
-import Category from '../models/Category';
-import Product from '../models/Product';
+import Category from '../models/Category.model';
+import Product from '../models/Product.model';
 import { statusCode } from '../constants/statusCode';
 
 export const CategoryControllers = {
-  getAll: async (req: Request, res: Response, next: NextFunction) => {
+  Get_All_Category: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = await Category.find({}).populate('products');
 
@@ -23,7 +23,7 @@ export const CategoryControllers = {
       next(error);
     }
   },
-  add: async (req: Request, res: Response, next: NextFunction) => {
+  Create_Category: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = await Category.create(req.body);
 
@@ -40,7 +40,7 @@ export const CategoryControllers = {
       next(error);
     }
   },
-  getOne: async (req: Request, res: Response, next: NextFunction) => {
+  Get_One_Category: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = await Category.findById(req.params.id).populate('products');
 
@@ -57,7 +57,7 @@ export const CategoryControllers = {
       next(error);
     }
   },
-  update: async (req: Request, res: Response, next: NextFunction) => {
+  Update_Category: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = await Category.findByIdAndUpdate(
         `${req.params.id}`,
@@ -78,7 +78,7 @@ export const CategoryControllers = {
     }
   },
   //? SOFT DELETE. Should use this
-  hide: async (req: Request, res: Response, next: NextFunction) => {
+  Hide_Category: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = await Category.findByIdAndUpdate(
         `${req.params.id}`,
@@ -99,7 +99,7 @@ export const CategoryControllers = {
     }
   },
   //! HARD DELETE. Not use this
-  delete: async (req: Request, res: Response, next: NextFunction) => {
+  Delete_Category: async (req: Request, res: Response, next: NextFunction) => {
     try {
       if (req.params.id === '660fa2a046e7c73371b80946') {
         return res.status(statusCode.BAD_REQUEST).json({

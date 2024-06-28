@@ -7,9 +7,10 @@ import morgan from 'morgan';
 import { errorHandler, errorHandlerNotFound } from './utils/errorHandler';
 
 import redirectPath from './middlewares/redirectPath';
-import router from './routes/index';
-import connect from './utils/connect';
+import router from './routes/index.route';
+
 import { PORT } from './utils/env';
+import connect from './databases/connect.db';
 
 const app = express();
 //! Init Middleware

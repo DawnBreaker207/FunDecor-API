@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
 
 import { statusCode } from '../constants/statusCode';
-import Order from '../models/Order';
+import Order from '../models/Order.model';
 import { messageError, messagesSuccess } from '../constants/message';
 
 export const createOrder: RequestHandler = async (req, res, next) => {

@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { Cart } from '../interfaces/Cart';
+import { Cart } from '../interfaces/Cart.interface';
 
 const cartSchema = new mongoose.Schema<Cart>(
   {

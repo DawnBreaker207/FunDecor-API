@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
 import { messageError, messagesSuccess } from '../constants/message';
-import User from '../models/User';
+import User from '../models/User.model';
 import { comparePassword, hashPassword } from '../utils/hashPassword';
 import { createToken } from '../utils/jwt';
 import { statusCode } from '../constants/statusCode';
