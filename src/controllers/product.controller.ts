@@ -28,7 +28,7 @@ export const productControllers = {
           Total: data.length,
           totalPages: Math.ceil(COUNT / _limit),
           currentPage: _page,
-          data,
+          res: data,
         });
       }
       return res
@@ -104,7 +104,7 @@ export const productControllers = {
       }
       return res.status(statusCode.CREATED).json({
         message: messagesSuccess.CREATE_PRODUCT_SUCCESS,
-        data,
+        res: data,
       });
     } catch (error) {
       next(error);
@@ -121,7 +121,7 @@ export const productControllers = {
       }
       return res.status(statusCode.CREATED).json({
         message: messagesSuccess.GET_PRODUCT_SUCCESS,
-        data,
+        res: data,
       });
     } catch (error) {
       next(error);
@@ -153,7 +153,7 @@ export const productControllers = {
       }
       return res.status(statusCode.CREATED).json({
         message: messagesSuccess.UPDATE_PRODUCT_SUCCESS,
-        data,
+        res: data,
       });
     } catch (error) {
       next(error);
@@ -174,7 +174,7 @@ export const productControllers = {
       }
       return res.status(statusCode.CREATED).json({
         message: messagesSuccess.UPDATE_PRODUCT_SUCCESS,
-        data,
+        res: data,
       });
     } catch (error) {
       next(error);
@@ -184,7 +184,6 @@ export const productControllers = {
   Delete_Product: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = await Product.findByIdAndDelete(req.params.id);
-
       if (data) {
         return res.status(statusCode.OK).json({
           message: messagesSuccess.DELETE_PRODUCT_SUCCESS,

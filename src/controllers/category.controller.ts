@@ -13,7 +13,7 @@ export const CategoryControllers = {
       if (data && data.length > 0) {
         return res.status(statusCode.OK).json({
           message: messagesSuccess.GET_CATEGORY_SUCCESS,
-          data,
+          res: data,
         });
       }
       return res
@@ -25,8 +25,9 @@ export const CategoryControllers = {
   },
   Create_Category: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const data = await Category.create(req.body);
+      console.log(req.body);
 
+      const data = await Category.create(req.body);
       if (!data) {
         return res
           .status(statusCode.BAD_REQUEST)
@@ -34,7 +35,7 @@ export const CategoryControllers = {
       }
       return res.status(statusCode.CREATED).json({
         message: messagesSuccess.CREATE_CATEGORY_SUCCESS,
-        data,
+        res: data,
       });
     } catch (error) {
       next(error);
@@ -51,7 +52,7 @@ export const CategoryControllers = {
       }
       return res.status(statusCode.CREATED).json({
         message: messagesSuccess.GET_CATEGORY_SUCCESS,
-        data,
+        res: data,
       });
     } catch (error) {
       next(error);
@@ -71,7 +72,7 @@ export const CategoryControllers = {
       }
       return res.status(statusCode.CREATED).json({
         message: messagesSuccess.UPDATE_CATEGORY_SUCCESS,
-        data,
+        res: data,
       });
     } catch (error) {
       next(error);
@@ -92,7 +93,7 @@ export const CategoryControllers = {
       }
       return res.status(statusCode.CREATED).json({
         message: messagesSuccess.UPDATE_CATEGORY_SUCCESS,
-        data,
+        res: data,
       });
     } catch (error) {
       next(error);

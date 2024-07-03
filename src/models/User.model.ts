@@ -3,10 +3,8 @@ import { UserType } from '../interfaces/User.interface';
 
 const userSchema = new mongoose.Schema<UserType>(
   {
-    name: {
+    username: {
       type: String,
-      unique: true,
-      required: true,
     },
     email: {
       type: String,
@@ -14,7 +12,6 @@ const userSchema = new mongoose.Schema<UserType>(
       require: true,
     },
     password: { type: String, required: true },
-
     role: { type: String, default: 'member' },
     avatar: { type: String },
     address: { type: String },

@@ -1,11 +1,12 @@
 import { RequestHandler } from 'express';
 import { messageError, messagesSuccess } from '../constants/message';
+import { statusCode } from '../constants/statusCode';
+import { UserType } from '../interfaces/User.interface';
 import User from '../models/User.model';
 import { comparePassword, hashPassword } from '../utils/hashPassword';
 import { createToken } from '../utils/jwt';
-import { statusCode } from '../constants/statusCode';
 
-export const register: RequestHandler = async (req, res, next) => {
+export const Register: RequestHandler = async (req, res, next) => {
   try {
     //* 1.Check data input
     //* 2.Check email exist
@@ -33,18 +34,17 @@ export const register: RequestHandler = async (req, res, next) => {
     user.password = undefined;
     return res.status(statusCode.CREATED).json({
       message: messagesSuccess.REGISTER_SUCCESS,
-      user,
+      res: user,
     });
   } catch (error) {
     next(error);
   }
 };
 
-export const login: RequestHandler = async (req, res, next) => {
+export const Login: RequestHandler = async (req, res, next) => {
   try {
     //* Step 1: Validate
     const { email, password } = req.body;
-
     //* Step 2: Check email exist
     const userExist = await User.findOne({ email });
     if (!userExist) {
@@ -59,15 +59,27 @@ export const login: RequestHandler = async (req, res, next) => {
         .json({ message: messageError.INVALID_PASSWORD });
     }
     //* Step 4: Create token => JWT
-    const token = createToken({ _id: userExist._id }, '10d');
-
-    //* Step 5: Return token for client
-
     userExist.password = undefined;
+    const token = createToken({ _id: userExist._id }, '10d');
+    //* Step 5: Return token for client
     return res.status(statusCode.CREATED).json({
       message: messagesSuccess.LOGIN_SUCCESS,
-      token,
-      user: userExist,
+      res: {
+        user: userExist,
+        accessToken: token,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const Check_Authorize: RequestHandler = async (req, res, next) => {
+  const { email, role } = req.user as UserType;
+  try {
+    res.status(statusCode.OK).json({
+      message: 'Valid',
+      res: { user: { email, role } },
     });
   } catch (error) {
     next(error);

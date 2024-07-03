@@ -1,6 +1,6 @@
 export interface UserType {
   _id?: string | number;
-  name?: string;
+  username?: string;
   email: string;
   password: string | undefined;
   role?: string;
