@@ -13,7 +13,7 @@ export const uploadImages: RequestHandler = async (req, res, next) => {
     }
 
     const b64 = Buffer.from(file.buffer).toString('base64');
-    let dataURI = 'data:' + req?.file?.mimetype + ';base64,' + b64;
+    const dataURI = 'data:' + req?.file?.mimetype + ';base64,' + b64;
     const data = await handleUpload(dataURI);
     if (data) {
       return res.status(statusCode.CREATED).json({

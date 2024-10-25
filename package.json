@@ -7,7 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": " nodemon dist/index.js ",
     "build": "tsc",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "lint:fix": "eslint . --fix",
+    "lint": "eslint . ",
+    "prettier:fix": "prettier write src"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +28,7 @@
     "mongoose": "^8.2.2",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
+    "nodejs": "file:",
     "zod": "^3.23.8"
   },
   "devDependencies": {
@@ -36,6 +40,12 @@
     "@types/morgan": "^1.9.9",
     "@types/multer": "^1.4.11",
     "@types/node": "^20.14.8",
-    "nodemon": "^3.1.0"
+    "@typescript-eslint/eslint-plugin": "^8.11.0",
+    "@typescript-eslint/parser": "^8.11.0",
+    "eslint": "^9.13.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "nodemon": "^3.1.0",
+    "prettier": "^3.3.3"
   }
 }

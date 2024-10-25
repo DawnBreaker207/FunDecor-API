@@ -76,7 +76,7 @@ export const removeFromCart: RequestHandler = async (req, res, next) => {
 export const updateProductQuantity: RequestHandler = async (req, res, next) => {
   const { userId, productId, quantity } = req.body;
   try {
-    let cart = await Cart.findOne({ userId });
+    const cart = await Cart.findOne({ userId });
     if (!cart) {
       return res
         .status(statusCode.BAD_REQUEST)

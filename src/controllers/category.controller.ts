@@ -25,8 +25,6 @@ export const CategoryControllers = {
   },
   Create_Category: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      console.log(req.body);
-
       const data = await Category.create(req.body);
       if (!data) {
         return res
@@ -63,7 +61,7 @@ export const CategoryControllers = {
       const data = await Category.findByIdAndUpdate(
         `${req.params.id}`,
         req.body,
-        { new: true }
+        { new: true },
       );
       if (!data) {
         return res.status(statusCode.NOT_FOUND).json({
@@ -84,7 +82,7 @@ export const CategoryControllers = {
       const data = await Category.findByIdAndUpdate(
         `${req.params.id}`,
         { hide: true },
-        { new: true }
+        { new: true },
       );
       if (!data) {
         return res.status(statusCode.BAD_REQUEST).json({
@@ -114,7 +112,7 @@ export const CategoryControllers = {
         productsToUpdate.map(async (product) => {
           product.category = new Types.ObjectId('660fa2a046e7c73371b80946');
           await product.save();
-        })
+        }),
       );
       const data = await Category.findByIdAndDelete(req.params.id);
 

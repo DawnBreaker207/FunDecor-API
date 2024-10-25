@@ -1,11 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { SortOrder } from 'mongoose';
 import { messageError, messagesSuccess } from '../constants/message';
 import { statusCode } from '../constants/statusCode';
 import Category from '../models/Category.model';
 import Product from '../models/Product.model';
-import { log } from 'console';
 
 export const productControllers = {
   Get_All_Product: async (req: Request, res: Response, next: NextFunction) => {
@@ -94,7 +92,7 @@ export const productControllers = {
         {
           $push: { products: data._id },
         },
-        { new: true }
+        { new: true },
       );
 
       if (!data || !updateCategory) {
@@ -132,7 +130,7 @@ export const productControllers = {
       const data = await Product.findByIdAndUpdate(
         `${req.params.id}`,
         req.body,
-        { new: true }
+        { new: true },
       );
       if (!data) {
         res
@@ -144,7 +142,7 @@ export const productControllers = {
         {
           $push: { products: data?._id },
         },
-        { new: true }
+        { new: true },
       );
       if (!data || !updateCategory) {
         return res.status(statusCode.NOT_FOUND).json({
@@ -165,7 +163,7 @@ export const productControllers = {
       const data = await Product.findByIdAndUpdate(
         `${req.params.id}`,
         { hide: true },
-        { new: true }
+        { new: true },
       );
       if (!data) {
         return res.status(statusCode.BAD_REQUEST).json({
